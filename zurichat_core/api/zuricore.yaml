@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Zuri Chat Core API
+  description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
+  contact:
+    email: developer@zuri.chat
+servers:
+  - description: Zuri Chat Core API
+    url: 'https://api.zuri-app-url.com/v1'
+tags:
+- name: auth
+  description: Controls user registration, login and password recovery
+paths:
+  /auth/register:
+    post:
+      tags:
+      - register
+      description: Gets user details and creates a record for the user in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userData'
+        required: true
+      responses:
+        "201":
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    userData:
+      required:
+      - address
+      - city
+      - country
+      - email
+      - first_name
+      - last_name
+      - password
+      - phone_number
+      - username
+      type: object
+      properties:
+        first_name:
+          type: string
+          pattern: ^(?![\s.]+$)[a-zA-Z\s.-]*$
+          example: Damilola
+        last_name:
+          type: string
+          pattern: ^(?![\s.]+$)[a-zA-Z\s.-]*$
+          example: Ige
+        username:
+          type: string
+          example: idmcalculus
+        email:
+          type: string
+          pattern: ^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$
+          example: email@email.com
+        password:
+          type: string
+          example: Tgf23@E!yF0$
+        phone_number:
+          type: string
+          pattern: ^((\+)?(\d{2}[-]))?(\d{11}){1}?$
+          example: "+2348100000000"
+        address:
+          type: string
+          example: N0 10, Downing Street
+        city:
+          type: string
+          example: Abuja
+        country:
+          type: string
+          example: Nigeria
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        metadata:
+          type: object
+    inline_response_201:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true

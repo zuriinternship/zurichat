@@ -14,6 +14,9 @@ info:
 tags:
   - name: app
     description: Api for the Apps
+  - name: Users
+    description: Endpoints for managing users
+
 paths:
   /sidebar:
     get:
@@ -46,6 +49,10 @@ paths:
                   $ref: '#/components/schemas/SidebarItem'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /show:
     post:
@@ -90,8 +97,194 @@ paths:
                   $ref: '#/components/schemas/App'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /users/{user_id}:
+    put:
+      summary: Updates the details of a user
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - $ref: '#/components/parameters/user_id'
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      tags:
+        - Users
+
+      responses:
+        '200':
+          description: User was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '404':
+          description: No user with the specified user_id was found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '500':
+          description: Someting went wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Retrieves the information about a user
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - $ref: '#/components/parameters/user_id'
+
+      responses:
+        '200':
+          description: Returns the full info about a user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '404':
+          description: No user with the specified user_id was found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '500':
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+      tags:
+        - Users
+
+    delete:
+      summary: Deactivates a user's account
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - $ref: '#/components/parameters/user_id'
+
+      tags:
+        - Users
+
+      responses:
+        '204':
+          description: User was successfully deactivated
+
+        '404':
+          description: No user with the specified user_id was found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '500':
+          description: Something went wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{user_id}/verify:
+    get:
+      summary: Sends an email verification link to a user
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - $ref: '#/components/parameters/user_id'
+
+      responses:
+        '204':
+          description: Email verification code successfully sent
+
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+        '403':
+          description: Forbidden, the requesting user's _id doesn't match the provided user_id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+      tags:
+        - Users
+
+    patch:
+      summary: Verifies a user's email address and updates their verification status
+      description: Code should be the otp in the email verification link recieved by the user
+      security:
+        - bearerAuth: [] 
+      parameters:
+        - $ref: '#/components/parameters/user_id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmail'
+
+      responses:
+        '200':
+          description: The user's email has been verified successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        '400':
+          description: Invalid email verification code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+      tags:
+        - Users
 
 components:
+  parameters:
+    user_id:
+      in: path
+      name: user_id
+      required: true
+      schema:
+        type: string
+
   schemas:
     SidebarItem:
       type: object
@@ -109,7 +302,11 @@ components:
           example: DM
         icon:
           type: string
-          example: user-profile-image
+          example: user-profile-image 
+        parent_id:
+          type: string
+          format: uuid 
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
           
     AppRequest:
       properties:
@@ -138,3 +335,33 @@ components:
           type: string
           example: 1.01
       type: object
+
+    User:
+      type: object
+      properties:
+         first_name:
+           type: string
+         last_name:
+           type: string
+         phone_number:
+           type: number
+         password:
+           type: string
+         email:
+           type: string
+         email_verified:
+           type: boolean
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+
+    VerifyEmail:
+      type: object
+      properties:
+        code:
+          type: string

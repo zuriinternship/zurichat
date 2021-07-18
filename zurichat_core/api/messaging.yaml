@@ -1,0 +1,200 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/kingabesh1/zuri-chat/1.0.0
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Zuri Chat Messaging API
+  contact:
+    email: abeshekwere@gmail.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+  - name: messaging
+    description: In-app messaging
+paths:
+  /send_to_user:
+    post:
+      tags:
+        - messaging
+      summary: send message to user
+      description: |
+        Send a user a message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/sendMessageBody"
+        description: Send a message
+      responses:
+        "200":
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageSent"
+        "400":
+          description: bad input parameter
+  /receive_message_userId:
+    post:
+      tags:
+        - messaging
+      summary: receive message from user.
+      description: |
+        Receive message from user. userId is id of user listening for this event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/receiveMessageBody"
+        description: Receive a message
+      responses:
+        "200":
+          description: Message received successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/messageReceived"
+        "400":
+          description: bad input parameter
+  /enter_room:
+    post:
+      tags:
+        - messaging
+      summary: enter a room
+      description: |
+        Enter a room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/enterOrLeaveRoomBody"
+        description: Enter a room
+      responses:
+        "200":
+          description: Joined room successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/enteredRoom"
+        "400":
+          description: bad input parameter
+  /leave_room:
+    post:
+      tags:
+        - messaging
+      summary: leave a room
+      description: |
+        Enter a room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/enterOrLeaveRoomBody"
+        description: Leave a room
+      responses:
+        "200":
+          description: Left room successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/leftRoom"
+        "400":
+          description: bad input parameter
+components:
+  schemas:
+    sendMessageBody:
+      type: object
+      required:
+        - receiver_id
+        - message
+      properties:
+        receiver_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        message:
+          type: string
+          example: Hi Abesh
+    receiveMessageBody:
+      type: object
+      required:
+        - sender_id
+        - message
+      properties:
+        receiver_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0853
+        message:
+          type: string
+          example: Hi Abesh
+    enterOrLeaveRoomBody:
+      type: object
+      required:
+        - room_id
+      properties:
+        room_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0857
+    messageSent:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Message sent successfully
+        data:
+          type: string
+          example: null
+    messageReceived:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Message received successfully
+        data:
+          type: string
+          example: null
+    enteredRoom:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Entered room successfully
+        data:
+          type: string
+          example: null
+    leftRoom:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Left room successfully
+        data:
+          type: string
+          example: null
+      type: object
