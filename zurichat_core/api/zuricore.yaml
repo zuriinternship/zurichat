@@ -36,6 +36,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
   /auth/login:
     post:
       tags:
@@ -45,7 +46,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/users'
+              $ref: '#/components/schemas/loginData'
         required: true
       responses:
         "200":
@@ -60,6 +61,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
 components:
   schemas:
     users:
@@ -106,6 +108,19 @@ components:
         country:
           type: string
           example: Nigeria
+    loginData:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          pattern: ^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$
+          example: email@example.com
+        password:
+          type: string
+          example: Tgf23@E!yF0$
     Error:
       required:
       - code
