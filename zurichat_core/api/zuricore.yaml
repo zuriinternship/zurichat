@@ -46,7 +46,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/loginData'
+              $ref: '#/components/schemas/login_data'
         required: true
       responses:
         "200":
@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_200'
+                $ref: '#/components/schemas/login_response_data'
         default:
           description: Login attempt unsuccessful
           content:
@@ -108,7 +108,7 @@ components:
         country:
           type: string
           example: Nigeria
-    loginData:
+    login_data:
       required:
       - email
       - password
@@ -140,7 +140,7 @@ components:
         success:
           type: boolean
           example: true
-    inline_response_200:
+    login_response_data:
       type: object
       properties:
         success:
@@ -148,3 +148,7 @@ components:
           example: true
         data:
           type: object
+          $ref:  "#/components/schemas/users"
+        token:
+          type: string
+          example: 3djfb313fi71ibrf9278754b2cbjhwbjab8e78873bcbjsbcjemwnenvrwejvVSGJWVjavibkwrejbvjiwu5793489t3fibjsbac
