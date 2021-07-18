@@ -1,0 +1,140 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/customerpayme/ZuriChat/1.0.0
+  - description: Zuri Chat Core API
+    url: 'https://api.zuri-app-url.com/v1'
+info:
+  version: 1.0.0
+  title: Zuri Chat Core API
+  description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
+  contact:
+    email: developer@zuri.chat
+tags:
+  - name: app
+    description: Api for the Apps
+paths:
+  /sidebar:
+    get:
+      tags:
+        - app
+      summary: retrieves all sidebar items that should be displayed on behalf of this app
+      operationId: getSidebar
+      description: |
+        This will return everything that needs to be shown in the sidebar
+      parameters:
+        - in: query
+          name: userID
+          description: provide the userid of the authenticated person. 
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: userToken
+          description: provide a user token that this app will use to validate that the call is genuine. It will call back Zuri Core
+          schema:
+            type: string
+      responses:
+        '200':
+          description: a list of sidebar items to be displayed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SidebarItem'
+        '400':
+          description: bad input parameter
+
+  /show:
+    post:
+      tags:
+        - app
+      summary: displays the main body of the app
+      operationId: showApp
+      description: |
+        Queries to get the full html for the app that will be shown on the right
+        hand side
+      parameters:
+        - in: query
+          name: userID
+          description: The ID of the particular user viewing this app
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: userToken
+          description: an authentication token
+          schema:
+            type: string
+            
+      requestBody:
+        description: The structure for the entire request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppRequest'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/App'
+        '400':
+          description: bad input parameter
+
+components:
+  schemas:
+    SidebarItem:
+      type: object
+      required:
+        - id
+        - title
+        - icon
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        title:
+          type: string
+          example: DM
+        icon:
+          type: string
+          example: user-profile-image
+          
+    AppRequest:
+      properties:
+        users_in_room:
+          type: string
+          example: Private Messages
+        data_endpoint:
+          type: string
+          example: 'api.zuri.chat/data'
+        messaging_endpoint:
+          type: string
+          example: 'api.zuri.chat/messaging'
+      type: object
+      
+    App:
+      required:
+        - name
+      properties:
+        title:
+          type: string
+          example: Private Messages
+        fullhtml:
+          type: string
+          example: '<html><head>...'
+        version:
+          type: string
+          example: 1.01
+      type: object
