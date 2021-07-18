@@ -21,7 +21,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/userData'
+              $ref: '#/components/schemas/users'
         required: true
       responses:
         "201":
@@ -36,9 +36,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /auth/login:
+    post:
+      tags:
+      - login
+      description: Checks if user is registered and is using the right credentials, and returns user data and token on success
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users'
+        required: true
+      responses:
+        "200":
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        default:
+          description: Login attempt unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
-    userData:
+    users:
       required:
       - address
       - city
@@ -101,3 +125,11 @@ components:
         success:
           type: boolean
           example: true
+    inline_response_200:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
