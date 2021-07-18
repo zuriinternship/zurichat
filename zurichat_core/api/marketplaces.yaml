@@ -1,0 +1,188 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/customerpayme/ZuriChat/1.0.0
+  - description: Zuri Chat Core API
+    url: 'https://api.zuri-app-url.com/v1'
+info:
+  version: 1.0.0
+  title: Zuri Chat Core API
+  description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
+  contact:
+    email: developer@zuri.chat
+tags:
+  - name: app
+    description: Api for the Apps
+  - name: Users
+    description: Endpoints for managing users
+  - name: marketplace
+    description: Get information about apps on the marketplace
+paths:
+  /marketplace/apps:
+    get:
+      summary: Returns a paginated list of apps on the marketplace
+      operationId: listApps
+      tags:
+        - marketplace
+      parameters:
+        - name: search
+          in: query
+          description: use to filter by app names
+          required: false
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: filter by category slug
+          required: false
+          schema:
+            type: string
+        - name: page-number
+          in: query
+          description: page to return
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 1
+      responses:
+        '200':
+          description: List of Apps on marketplace
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - total
+                  - current_page
+                  - last_page
+                properties:
+                  data:      
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MarketplaceAppList'
+                  total:
+                    type: integer
+                    format: int64
+                  current_page:
+                    type: integer
+                    format: int64
+                  last_page:
+                    type: integer
+                    format: int64
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /marketplace/apps/{app_id}:
+    get:
+      summary: get single marketplace app details
+      operationId: singleApp
+      tags:
+        - marketplace
+      parameters:
+        - name: app_id
+          in: path
+          description: App Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceApp'
+      
+        '404':
+          description: App not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+        metadata:
+          type: object
+          
+    MarketplaceAppList:
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - short_description
+        - categories
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+          pattern: '^[a-z0-9-]+$'
+        short_description:
+          type: string
+        categories:
+          type: array
+          items:
+              type: string
+              description: category slug
+    MarketplaceApp:
+      type: object
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - categories
+        - features
+        - permissions
+        - security_compliace
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+          pattern: '^[a-z0-9-]+$'
+        description:
+          type: string
+        categories:
+          type: array
+          items:
+              type: string
+              description: category slug
+        features:
+          type: array
+        permissions:
+          type: object
+          description: what the app will be able to do on zuri chat
+        security_compliace:
+          type: array
+          items:
+            type: object
+            description: 'would contain keys like: general, privacy and data governance, certifications and compliance, security, 0auth scopes'
