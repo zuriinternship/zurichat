@@ -1,0 +1,102 @@
+openapi: 3.0.0
+info:
+  title: Zuri Chat Core API
+  description: A basic endpoint from which user profile is profile can be edited
+  contact:
+    email: iamtundegiwa@gmail.com
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/autech/zuri-chat/settings/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: users
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+paths:
+  /settings:
+    post:
+      tags:
+      - users
+      summary: updates user profile
+      description: updates user information based on properties passed in
+      operationId: addInventory
+      requestBody:
+        description: user properties to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "201":
+          description: profile updated
+        "400":
+          description: error! profile not updated
+        "409":
+          description: haba no be your profile be this
+components:
+  schemas:
+    User:
+      required:
+        - address
+        - city
+        - country
+        - email
+        - first_name
+        - last_name
+        - password
+        - phone_number
+        - username
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Barrack
+        last_name:
+          type: string
+          example: Obama
+        username:
+          type: string
+          example: barobama
+        email:
+          type: string
+          example: example@email.com
+        password:
+          type: string
+          example: password
+        phone_number:
+          type: string
+          example: 080222442424
+        address:
+          type: string
+          example: No 2 Zenith Mafia, Kilimanjaro
+        city:
+          type: string
+          example: Loki
+        country:
+          type: string
+          example: Wakanda
+        joinedDate:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        organization:
+          $ref: '#/components/schemas/Organization'
+    Organization:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Joke Teaches
+        homePage:
+          type: string
+          format: url
+          example: https://www.joketeaches.com
+        phone:
+          type: string
+          example: 408-867-5309
+        url:
+          type: string
+          example: https://www.zuri-chat.com/organization/4db4148f9e0nfa
