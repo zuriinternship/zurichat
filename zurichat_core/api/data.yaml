@@ -1,0 +1,95 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Zuri Chat Core API
+  description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
+  contact:
+    email: developer@zuri.chat
+servers:
+  - description: Zuri Chat Core API
+    url: 'https://api.zuri-app-url.com/v1'
+tags:
+- name: data
+  description: Controls plugins data management
+paths:
+  /data:
+    post:
+      tags:
+      - save
+      description: Saves data to the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/data'
+        required: true
+      responses:
+        "201":
+          description: Data save successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_201'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+      - retrieve
+      description: Retrieves data from the database
+      parameters:
+        - in: path
+          name: dataID
+          description: provide the ID of the data to be retrieved. 
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_200'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    data:
+      type: object
+      # properties:
+        # any valid abitrary data
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        metadata:
+          type: object
+    response_201:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+    response_200:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
