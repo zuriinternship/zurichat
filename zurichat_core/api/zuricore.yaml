@@ -29,7 +29,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_201'
+                $ref: '#/components/schemas/reg_response_201'
         default:
           description: Unexpected error
           content:
@@ -134,7 +134,7 @@ components:
           type: string
         metadata:
           type: object
-    inline_response_201:
+    reg_response_201:
       type: object
       properties:
         success:
