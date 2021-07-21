@@ -1,0 +1,35 @@
+{
+  "bsonType": "object",
+  "title": "organizations",
+  "required": [
+    "_id",
+    "name",
+    "email",
+    "organization_settings",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "_id": {
+      "bsonType": "objectid"
+    },
+    "name": {
+      "bsonType": "string"
+    },
+    "email": {
+      "bsonType": "string"
+    },
+    "organization_logo_url": {
+      "bsonType": "string"
+    },
+    "organization_settings": {
+      "bsonType": "object"
+    },
+    "created_at": {
+      "bsonType": "timestamp"
+    },
+    "updated_at": {
+      "bsonType": "timestamp"
+    }
+  }
+}
