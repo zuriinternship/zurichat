@@ -1,7 +1,35 @@
 {
-    "_id": "5099803df3f4948bd2f98391",
-    "owner_app": "19c8c275-a734-4e20-a045-e6a366dcf0e6",
-    "app_auth_token": "297bf9a1-70eb-48c7-823a-dd1033fcf9ea",
-    "collection_name": "SetByTheApp",
-    "collection_data": ["Any", "Thing", "The", "App", "Wants"]
+    "bsonType": "object",
+    "title": "app_data",
+    "required": [
+        "_id",
+        "owner_app_id",
+        "app_auth_token",
+        "collection_name",
+        "collection_data",
+        "createdAt"
+    ],
+    "properties": {
+        "_id": {
+            "bsonType": "objectid"
+        },
+        "owner_app_id": {
+            "bsonType": "objectid"
+        },
+        "app_auth_token": {
+            "bsonType": "uuid"
+        },
+        "collection_name": {
+            "bsonType": "string"
+        },
+        "collection_data": {
+            "bsonType": "array",
+            "items": [
+                {
+                    "bsonType": "object"
+                }
+            ],
+            "minItems": 0
+        }
+    }
 }
