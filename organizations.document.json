@@ -37,13 +37,16 @@
             "bsonType": "objectid"
           },
           "app_id": {
+            "description": "A reference to the app that is being installed",
             "bsonType": "objectid"
           },
           "added_by": {
+            "description": "A reference to the user that added the app to this organization",
             "bsonType": "objectid",
             "minLength": "5"
           },
           "approved_by": {
+            "description": "A reference to the organization admin that approved the app to be added to the organization",
             "bsonType": "objectid",
             "minimum": 0
           },
