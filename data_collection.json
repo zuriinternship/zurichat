@@ -1,0 +1,35 @@
+{
+    "bsonType": "object",
+    "title": "app_data",
+    "required": [
+        "_id",
+        "owner_app_id",
+        "app_auth_token",
+        "collection_name",
+        "collection_data",
+        "createdAt"
+    ],
+    "properties": {
+        "_id": {
+            "bsonType": "objectid"
+        },
+        "owner_app_id": {
+            "bsonType": "objectid"
+        },
+        "app_auth_token": {
+            "bsonType": "uuid"
+        },
+        "collection_name": {
+            "bsonType": "string"
+        },
+        "collection_data": {
+            "bsonType": "array",
+            "items": [
+                {
+                    "bsonType": "object"
+                }
+            ],
+            "minItems": 0
+        }
+    }
+}

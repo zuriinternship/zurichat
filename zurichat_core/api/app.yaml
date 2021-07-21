@@ -1,19 +1,19 @@
 openapi: 3.0.0
 servers:
-  # Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/customerpayme/ZuriChat/1.0.0
   - description: Zuri Chat Core API
     url: 'https://api.zuri-app-url.com/v1'
 info:
   version: 1.0.0
-  title: Zuri Chat Core API
+  title: Zuri Chat App API
   description: Zuri Chat is an open source slack clone. However, it offers a lot more functionality via a plugin system where each room can be provided by a different plugin provider.
   contact:
     email: developer@zuri.chat
 tags:
   - name: app
     description: Api for the Apps
+  - name: Users
+    description: Endpoints for managing users
+
 paths:
   /sidebar:
     get:
@@ -46,6 +46,10 @@ paths:
                   $ref: '#/components/schemas/SidebarItem'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /show:
     post:
@@ -90,6 +94,11 @@ paths:
                   $ref: '#/components/schemas/App'
         '400':
           description: bad input parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /organizations:
     get:
@@ -399,13 +408,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
-  parameters:
-    organization_id:
-      in: path
-      name: organization_id
-      required: true
-      schema:
-        type: integer
   schemas:
     SidebarItem:
       type: object
@@ -423,7 +425,11 @@ components:
           example: DM
         icon:
           type: string
-          example: user-profile-image
+          example: user-profile-image 
+        parent_id:
+          type: string
+          format: uuid 
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
           
     AppRequest:
       properties:
@@ -453,21 +459,10 @@ components:
           example: 1.01
       type: object
 
-    Organization:
+    Error:
       type: object
       properties:
-        user_id:
-          type: integer
-          example: 12
-        name:
+        code:
+          type: number
+        message:
           type: string
-          example: 'HNG'
-        email:
-          type: string
-          example: 'hng@email.com'
-        organization_logo_url:
-          type: integer
-          example: 12
-        organization_settings:
-          type: json
-          example: {"global_settings": {"allow_user_add_plugins": true, "allow_only_admin_invite": true}, "plugin_settings": {"chess_plugin": {"allow_in_every_channel": false}}}
