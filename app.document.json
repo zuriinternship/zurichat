@@ -16,22 +16,27 @@
       "bsonType": "objectid"
     },
     "name": {
+      "description": "The name of the app",
       "bsonType": "string",
       "maxLength": 200,
       "minLength": 3
     },
     "description": {
+      "description": "A brief description of what the app does.",
       "bsonType": "objectId",
       "minLength": "5"
     },
     "install_count": {
+      "description": "Total number of times the app has been installed by organisations",
       "bsonType": "int",
       "minimum": 0
     },
     "approved": {
+      "description": "Shows if the app has been approved",
       "bsonType": "bool"
     },
     "approved_at": {
+      "description": "Shows the date the app got approved",
       "bsonType": "date"
     },
     "created_at": {
