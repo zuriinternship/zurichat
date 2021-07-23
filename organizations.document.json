@@ -1,75 +1,79 @@
 {
-  "bsonType": "object",
-  "title": "organizations",
-  "required": [
-    "_id",
-    "name",
-    "email",
-    "organization_settings",
-    "apps",
-    "created_at",
-    "updated_at"
-  ],
-  "properties": {
-    "_id": {
-      "bsonType": "objectid"
-    },
-    "name": {
-      "bsonType": "string"
-    },
-    "email": {
-      "bsonType": "string"
-    },
-    "apps": {
-      "bsonType": "array",
-      "items": {
-        "bsonType": "object",
-        "required": [
-          "_id",
-          "app_id",
-          "added_by",
-          "approved_by",
-          "created_at",
-          "updated_at"
-        ],
-        "properties": {
-          "_id": {
+    "bsonType": "object",
+    "title": "organizations",
+    "required": [
+        "_id",
+        "name",
+        "email",
+        "apps",
+        "organization_creator",
+        "organization_settings",
+        "created_at",
+        "updated_at"
+    ],
+    "properties": {
+        "_id": {
             "bsonType": "objectid"
-          },
-          "app_id": {
-            "description": "A reference to the app that is being installed",
+        },
+        "name": {
+            "bsonType": "string"
+        },
+        "email": {
+            "bsonType": "string"
+        },
+        "apps": {
+            "bsonType": "array",
+            "items": {
+                "bsonType": "object",
+                "required": [
+                    "_id",
+                    "app_id",
+                    "added_by",
+                    "approved_by",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "_id": {
+                        "bsonType": "objectid"
+                    },
+                    "app_id": {
+                        "description": "A reference to the app that is being installed",
+                        "bsonType": "objectid"
+                    },
+                    "added_by": {
+                        "description": "A reference to the user that added the app to this organization",
+                        "bsonType": "objectid",
+                        "minLength": "5"
+                    },
+                    "approved_by": {
+                        "description": "A reference to the organization admin that approved the app to be added to the organization",
+                        "bsonType": "objectid",
+                        "minimum": 0
+                    },
+                    "created_at": {
+                        "bsonType": "timestamp"
+                    },
+                    "updated_at": {
+                        "bsonType": "timestamp"
+                    }
+                }
+            }
+        },
+        "organization_logo_url": {
+            "bsonType": "string"
+        },
+        "_creator": {
             "bsonType": "objectid"
-          },
-          "added_by": {
-            "description": "A reference to the user that added the app to this organization",
-            "bsonType": "objectid",
-            "minLength": "5"
-          },
-          "approved_by": {
-            "description": "A reference to the organization admin that approved the app to be added to the organization",
-            "bsonType": "objectid",
-            "minimum": 0
-          },
-          "created_at": {
+        },
+        "organization_settings": {
+            "bsonType": "object"
+        },
+        "created_at": {
             "bsonType": "timestamp"
-          },
-          "updated_at": {
+        },
+        "updated_at": {
             "bsonType": "timestamp"
-          }
         }
-      }
-    },
-    "organization_logo_url": {
-      "bsonType": "string"
-    },
-    "organization_settings": {
-      "bsonType": "object"
-    },
-    "created_at": {
-      "bsonType": "timestamp"
-    },
-    "updated_at": {
-      "bsonType": "timestamp"
     }
-  }
 }

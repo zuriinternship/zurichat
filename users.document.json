@@ -1,0 +1,102 @@
+{
+    "bsonType": "object",
+    "title": "users",
+    "required": [
+        "first_name",
+        "last_name",
+        "email",
+        "password",
+        "status",
+        "company",
+        "settings",
+        "created_at",
+        "updated_at"
+    ],
+    "properties": {
+        "_id": {
+            "bsonType": "objectid"
+        },
+        "first_name": {
+            "bsonType": "string"
+        },
+        "last_name": {
+            "bsonType": "string"
+        },
+        "email": {
+            "bsonType": "string"
+        },
+        "password": {
+            "bsonType": "string"
+        },
+        "phone": {
+            "bsonType": "string"
+        },
+        "status": {
+            "bsonType": "string",
+            "enum": ["active", "suspended", "disabled"]
+        },
+        "email_verification": {
+            "bsonType": "object",
+            "properties": {
+                "verified": { "bsonType": "boolean" },
+                "token": { "bsonType": "string" },
+                "expired_at": { "bsonType": "timestamp" }
+            }
+        },
+        "workpsaces": {
+            "bsonType": "array",
+            "items": {
+                "bsonType": "objectid"
+            }
+        },
+        "password_resets": {
+            "bsonType": "array",
+            "items": {
+                "bsonType": "object",
+                "required": [
+                    "ipaddress",
+                    "token",
+                    "expired_at",
+                    "updated_at",
+                    "created_at"
+                ],
+                "properties": {
+                    "ipaddress": { "bsonType": "string" },
+                    "token": { "bsonType": "string" },
+                    "expired_at": { "bsonType": "timestamp" },
+                    "updated_at": { "bsonType": "timestamp" },
+                    "created_at": { "bsonType": "timestamp" }
+                }
+            }
+        },
+        "company": {
+            "bsonType": "object",
+            "properties": {
+                "name": { "bsonType": "string" },
+                "category": { "bsonType": "string" },
+                "size": { "bsonType": "string" }
+            }
+        },
+        "settings": {
+            "bsonType": "mixed",
+            "properties": {
+                "role": {
+                    "bsonType": "string",
+                    "enum": ["super", "admin", "member"]
+                }
+            }
+        },
+        "timezone": {
+            "bsonType": "string"
+        },
+        "created_at": {
+            "bsonType": "timestamp"
+        },
+        "updated_at": {
+            "bsonType": "timestamp"
+        },
+        "deleted_at": {
+            "bsonType": "timestamp"
+        }
+    }
+}
