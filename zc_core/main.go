@@ -7,14 +7,25 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"zuri.chat/zccore/data"
 )
 
-func main() {
-	fmt.Println("Hello Zuri Chat")
-
+func Router() *mux.Router {
 	r := mux.NewRouter()
+
 	r.HandleFunc("/", VersionHandler)
+	r.HandleFunc("/data/write", data.WriteData)
+	r.HandleFunc("/data/read", data.ReadData)
+
 	http.Handle("/", r)
+
+	return r
+}
+
+func main() {
+	fmt.Println("Zuri Chat API running")
+
+	r := Router()
 
 	srv := &http.Server{
 		Handler:      r,
@@ -27,7 +38,6 @@ func main() {
 }
 
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Version 0.0001. Cat=%s\n", vars["category"])
+	fmt.Fprintf(w, "Zuri Chat API - Version 0.0001\n")
 }
