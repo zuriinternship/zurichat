@@ -660,7 +660,7 @@ paths:
   /data:
     post:
       tags:
-      - save
+      - Data
       description: Saves data to the database
       requestBody:
         content:
@@ -684,7 +684,7 @@ paths:
 
     get:
       tags:
-      - retrieve
+      - Data
       description: Retrieves data from the database
       parameters:
         - in: path

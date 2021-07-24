@@ -99,9 +99,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-
 components:
-
   schemas:
     SidebarItem:
       type: object

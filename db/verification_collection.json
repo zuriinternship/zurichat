@@ -1,0 +1,33 @@
+{
+  "bsonType": "object",
+  "title": "User Verification",
+  "properties": {
+    "_id": {
+      "description": "Record identifier (ObjectID)",
+      "bsonType": "objectId"
+    },
+    "_user": {
+      "description": "Reference to the user's collection (ObjectID)",
+      "bsonType": "objectId"
+    },
+    "verification_token": {
+      "description": "verification token for the user",
+      "bsonType": "string"
+    },
+    "expires_in": {
+      "description": "Sets an expiration time",
+      "bsonType": "date"
+    },
+    "verified": {
+      "description": "Sets verification status",
+      "bsonType": "boolean"
+    },
+    "created_at": {
+      "bsonType": "timestamp"
+    },
+    "updated_at": {
+      "bsonType": "timestamp"
+    }
+  },
+  "required": ["id", "user", "verification_token", "expires_in"]
+}

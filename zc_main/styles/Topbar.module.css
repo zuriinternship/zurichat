@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 5.0625em;
+  justify-content: flex-end;
+}
+.profile {
+  background-color: #acffe6;
+  border-radius: 50%;
+  display: flex;
+  margin-left: 1.375em;
+  align-items: center;
+  justify-content: center;
+  height: 2.5em;
+  width: 2.5em;
+}
