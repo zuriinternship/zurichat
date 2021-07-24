@@ -58,3 +58,141 @@
   align-items: center;
   justify-content: center;
 }
+
+.channelsContainer {
+  margin-top: .5em;
+}
+
+.channelHeader {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.875em;
+  align-items: center;
+  height: 2em;
+}
+
+.channelHeader p {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.channelDropdownIcon {
+  margin: 1em 1em 1em 0;
+}
+
+.channelAddBtn {
+  margin-left: 6em;
+  margin-right: 1.25em;
+}
+
+.channelNames {
+  margin-left: 3.5em;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.channelNames p > span {
+  margin-right: 0.5em;
+}
+
+.messagesContainer {
+  margin-top: .5em;
+}
+
+.messageHeader {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.875em;
+  align-items: center;
+  height: 2em;
+}
+
+.messageHeader p {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.messageDropdownIcon {
+  margin: 1em 1em 1em 0;
+}
+
+.messageAddBtn {
+  margin-left: 6em;
+  margin-right: 1.25em;
+}
+
+.messageNames {
+  margin-left: 3.5em;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.messageNames p > span {
+  margin-right: 0.5em;
+}
+
+.messagesContainer {
+  margin-top: .5em;
+}
+
+.messageHeader {
+  display: flex;
+  flex-direction: row;
+  margin-left: 1.875em;
+  align-items: center;
+  height: 2em;
+}
+
+.messageHeader p {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.messageDropdownIcon {
+  margin: 1em 1em 1em 0;
+}
+
+.messageAddBtn {
+  margin-left: 6em;
+  margin-right: 1.25em;
+}
+
+.messageNames {
+  margin-left: 3.5em;
+  font-family: Lato;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 18px;
+  color: #999999;
+}
+
+.messageNames p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.messageNames p > span {
+  margin-right: 0.5em;
+}
