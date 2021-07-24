@@ -1,10 +1,17 @@
 import React from 'react';
+import useSWR from 'swr';
 
-import { channels } from '../lib/channels';
-import { messages } from '../lib/dms';
 import styles from '../styles/Sidebar.module.css';
 
-export const Sidebar = () => {
+const fetcher = url => fetch(url).then(res => res.json());
+
+export const Sidebar = ({ channels, messages }) => {
+  const { data: channelsData } = useSWR('/api/plugins/channels', fetcher, {
+    initialData: channels
+  });
+  const { data: messagesData } = useSWR('/api/plugins/messages', fetcher, {
+    initialData: messages
+  });
   return (
     <div className={styles.container}>
       <div className={styles.zuriLogo}>
@@ -38,14 +45,15 @@ export const Sidebar = () => {
           />
         </div>
         <div className={styles.channelNames}>
-          {channels.map(channel => (
-            <div key={channel.id}>
-              <p>
-                <span>#</span>
-                {channel.name}
-              </p>
-            </div>
-          ))}
+          {channelsData &&
+            channelsData.channels.map(channel => (
+              <div key={channel.id}>
+                <p>
+                  <span>#</span>
+                  {channel.name}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
       <div className={styles.messagesContainer}>
@@ -63,18 +71,33 @@ export const Sidebar = () => {
           />
         </div>
         <div className={styles.messageNames}>
-          {messages.map(message => (
-            <div className={styles.messageTitle} key={message.id}>
-              <p>
-                <span>
-                  <img src={message.avatar} alt="avatar" />
-                </span>
-                {message.name}
-              </p>
-            </div>
-          ))}
+          {messagesData &&
+            messagesData.messages.map(message => (
+              <div className={styles.messageTitle} key={message.id}>
+                <p>
+                  <span>
+                    <img src={message.avatar} alt="avatar" />
+                  </span>
+                  {message.name}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </div>
   );
+};
+
+export const getStaticProps = async () => {
+  const channelsRes = await fetcher('http://0.0.0.0:3000/api/plugins/channels');
+  const { channels } = await channelsRes.json();
+  const messagesRes = await fetcher('http://0.0.0.0:3000/api/plugins/messages');
+  const { messages } = await messagesRes.json();
+
+  return {
+    props: {
+      channels,
+      messages
+    }
+  };
 };
