@@ -14,6 +14,7 @@ func Router() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", VersionHandler)
+	r.HandleFunc("/loadapp/{appid}", LoadApp).Methods("GET")
 	r.HandleFunc("/data/write", data.WriteData)
 	r.HandleFunc("/data/read", data.ReadData)
 
@@ -23,7 +24,7 @@ func Router() *mux.Router {
 }
 
 func main() {
-	fmt.Println("Zuri Chat API running")
+	fmt.Println("Zuri Chat API running on 127.0.0.1:8000")
 
 	r := Router()
 
@@ -35,6 +36,15 @@ func main() {
 	}
 
 	log.Fatal(srv.ListenAndServe())
+}
+
+func LoadApp(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	appId := params["appid"]
+
+	fmt.Printf("URL called with Param: %s", appId)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "<div><b>Hello</b> World <button style='color: green;'>Click me!</button></div>: App = %s\n", appId)
 }
 
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
