@@ -178,10 +178,10 @@
 }
 
 .messageNames {
-  margin-left: 3.5em;
+  margin-left: 2.5em;
   font-family: Lato;
   font-style: normal;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 15px;
   line-height: 18px;
   color: #999999;
