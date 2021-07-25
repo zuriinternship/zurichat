@@ -46,7 +46,7 @@ func TestReact(w http.ResponseWriter, r *http.Request) {
 
 func TestHtml(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "<div><b>Hello</b> World</div>\n")
+	fmt.Fprintf(w, "<div><b>Hello</b> World <button style='color: green;'>Click me!</button></div>\n")
 }
 
 func VersionHandler(w http.ResponseWriter, r *http.Request) {
