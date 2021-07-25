@@ -1,5 +1,6 @@
 import Head from 'next/head';
 
+import { PluginContent } from '../components/PluginContent';
 import { Sidebar } from '../components/Sidebar';
 import { Topbar } from '../components/Topbar';
 import styles from '../styles/Home.module.css';
@@ -14,7 +15,9 @@ export default function Home() {
       <Sidebar />
       <div className={styles.room}>
         <Topbar />
-        <div className={styles.pluginContent}></div>
+        <div className={styles.pluginContent}>
+          <PluginContent />
+        </div>
       </div>
     </div>
   );
