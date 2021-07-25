@@ -111,11 +111,11 @@
                             "enum": ["all", "direct", "none"]
                         }
                     }
+                },
+                "timezone": {
+                    "bsonType": "string"
                 }
             }
-        },
-        "timezone": {
-            "bsonType": "string"
         },
         "created_at": {
             "bsonType": "timestamp"
