@@ -14,8 +14,7 @@ func Router() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", VersionHandler)
-	r.HandleFunc("/testhtml", TestHtml)
-	r.HandleFunc("/testreact", TestReact)
+	r.HandleFunc("/loadapp/{appid}", LoadApp).Methods("GET")
 	r.HandleFunc("/data/write", data.WriteData)
 	r.HandleFunc("/data/read", data.ReadData)
 
@@ -39,14 +38,12 @@ func main() {
 	log.Fatal(srv.ListenAndServe())
 }
 
-func TestReact(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Zuri Chat API - Version 0.0001\n")
-}
+func LoadApp(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	appId := params["appid"]
 
-func TestHtml(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "<div><b>Hello</b> World <button style='color: green;'>Click me!</button></div>\n")
+	fmt.Fprintf(w, "<div><b>Hello</b> World <button style='color: green;'>Click me!</button></div>: App = %s\n", appId)
 }
 
 func VersionHandler(w http.ResponseWriter, r *http.Request) {

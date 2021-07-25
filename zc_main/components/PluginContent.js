@@ -8,7 +8,7 @@ import styles from '../styles/PluginContent.module.css';
 // The data should contain the URL to call for the plugin data, and that should replace
 // the variable used to store the URL currently.
 export const PluginContent = () => {
-  const pluginUrl = '/api/testhtml';
+  const pluginUrl = '/apps/default';
   useEffect(() => {
     axios.get(pluginUrl).then(response => {
       const parser = new DOMParser();
