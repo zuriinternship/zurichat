@@ -196,3 +196,7 @@
 .messageNames p > span {
   margin-right: 0.5em;
 }
+
+.channelItem{
+  cursor: pointer;
+}

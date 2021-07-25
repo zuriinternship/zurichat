@@ -1,5 +1,6 @@
 import React from 'react';
 import useSWR from 'swr';
+import { URLContext } from '../pages'
 
 import styles from '../styles/Sidebar.module.css';
 
@@ -12,6 +13,9 @@ export const Sidebar = ({ channels, messages }) => {
   const { data: messagesData } = useSWR('/api/plugins/messages', fetcher, {
     initialData: messages
   });
+
+  const value = React.useContext(URLContext); 
+
   return (
     <div className={styles.container}>
       <div className={styles.zuriLogo}>
@@ -48,10 +52,10 @@ export const Sidebar = ({ channels, messages }) => {
           {channelsData &&
             channelsData.channels.map(channel => (
               <div key={channel.id}>
-                <p>
-                  <span>#</span>
-                  {channel.name}
-                </p>
+                  <p className={styles.channelItem}  onClick={()=>value.setUrl( `/apps/${channel.name}` )}>
+                    <span>#</span>
+                    {channel.name}
+                  </p>
               </div>
             ))}
         </div>
@@ -85,6 +89,7 @@ export const Sidebar = ({ channels, messages }) => {
         </div>
       </div>
     </div>
+    // </URLContext.Consumer>
   );
 };
 
