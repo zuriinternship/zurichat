@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"zuri.chat/zccore/data"
 )
 
@@ -23,18 +25,39 @@ func Router() *mux.Router {
 	return r
 }
 
+// function to check if a file exists, usefull in checking for .env
+func file_exists(name string) bool {
+	_, err := os.Stat(name)
+	return !os.IsNotExist(err)
+}
+
 func main() {
-	fmt.Println("Zuri Chat API running on 127.0.0.1:8000")
+	// load .env file if it exists
+	if file_exists(".env") {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+
+	// get PORT from environment variables
+	port, ok := os.LookupEnv("PORT")
+
+	// if there is no PORT in environment variables default to port 8000
+	if !ok {
+		port = "8000"
+	}
 
 	r := Router()
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "127.0.0.1:8000",
+		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
+	fmt.Println("Zuri Chat API running on port ", port)
 	log.Fatal(srv.ListenAndServe())
 }
 
