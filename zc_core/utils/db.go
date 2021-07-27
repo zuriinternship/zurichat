@@ -13,7 +13,7 @@ import (
 //"mongodb+srv://zuri:<password>@cluster0.hepte.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 // If you want to export your function. You must to start upper case function name. Otherwise you won't see your function when you import that on other class.
-//GetMongoDbConnection get connection of mongodb
+//getMongoDbConnection get connection of mongodb
 func getMongoDbConnection() (*mongo.Client, error) {
 	cluster_url := "mongodb+srv://zuri:<password>@cluster0.hepte.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 	
@@ -36,6 +36,7 @@ func getMongoDbConnection() (*mongo.Client, error) {
 	return client, nil
 }
 
+//GetMongoDbCollection get collection inside your db, this function can be exorted
 func GetMongoDbCollection(DbName string, CollectionName string) (*mongo.Collection, error) {
 	client, err := getMongoDbConnection()
 
