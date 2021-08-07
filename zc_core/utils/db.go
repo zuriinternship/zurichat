@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -60,7 +59,6 @@ func GetMongoDbDocs(CollectionName string, filter map[string]interface{}) ([]bso
 	}
 
 	collection := client.Database(DbName).Collection(CollectionName)
-	fmt.Println(DbName)
 
 	var data []bson.M
 	filterCursor, err := collection.Find(ctx, MapToBson(filter))
