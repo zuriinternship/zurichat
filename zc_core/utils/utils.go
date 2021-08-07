@@ -16,11 +16,32 @@ type ErrorResponse struct {
 	ErrorMessage string `json:"message"`
 }
 
+// SuccessResponse : This is success model.
+type SuccessResponse struct {
+	StatusCode   int    `json:"status"`
+	Message string `json:"message"`
+	Data	interface{} `json:"data"`
+}
+
 // GetError : This is helper function to prepare error model.
-func GetError(err error, w http.ResponseWriter) {
+func GetError(err error, StatusCode int, w http.ResponseWriter) {
 	var response = ErrorResponse{
 		ErrorMessage: err.Error(),
-		StatusCode:   http.StatusInternalServerError,
+		StatusCode:   StatusCode,
+	}
+
+	message, _ := json.Marshal(response)
+
+	w.WriteHeader(response.StatusCode)
+	w.Write(message)
+}
+
+// GetSuccess : This is helper function to prepare success model.
+func GetSuccess(msg string, data interface{}, w http.ResponseWriter) {
+	var response = SuccessResponse{
+		Message: msg,
+		StatusCode: http.StatusOK,
+		Data: data,
 	}
 
 	message, _ := json.Marshal(response)
@@ -32,12 +53,12 @@ func GetError(err error, w http.ResponseWriter) {
 // get env vars; return empty string if not found
 func Env(key string) string {
 	if !FileExists(".env") {
-		log.Fatal("Error loading .env file")
+		log.Fatal("error loading .env file")
 	}
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("error loading .env file")
 	}
 
 	env, ok := os.LookupEnv(key)
