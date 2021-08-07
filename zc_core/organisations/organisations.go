@@ -10,46 +10,57 @@ import (
 )
 
 func Create(w http.ResponseWriter, r *http.Request) {
-	db, collection := "zurichat", "organizations"
+	// parse form data
+	r.ParseForm()
+	collection, user_collection := "organizations", "users"
 
 	// validate required fields
-	// add required params into required array and make an empty array to hold error strings
-	required, empty := []string{"user_id"}, make([]string, 0)
+	// add required params into required array, make an empty array to hold error strings, make map to hold valid form params for creating organization
+	required, empty, form_params := []string{"user_id", "name", "email"}, make([]string, 0), make(map[string]interface{})
+
 	// get the form params
-	form_params := r.URL.Query()
+	form_params["user_id"] = r.FormValue("user_id")
+	form_params["name"] = r.FormValue("name")
+	form_params["email"] = r.FormValue("email")
+	// fmt.Println(utils.MapToBson(form_params))
+
 	// loop through and check for empty required params
 	for _, value := range required {
-		if strings.TrimSpace(form_params.Get(value)) == "" {
+		if str, ok := form_params[value].(string); ok {
+			if strings.TrimSpace(str) == "" {
+				empty = append(empty, strings.Join(strings.Split(value, "_"), " "))
+			}
+		} else {
 			empty = append(empty, strings.Join(strings.Split(value, "_"), " "))
 		}
-
-		if len(empty) > 0 {
-			utils.GetError(errors.New(strings.Join(empty, ", ") + " required"), w)
-		}
+	}
+	if len(empty) > 0 {
+		utils.GetError(errors.New(strings.Join(empty, ", ")+" required"), w)
+		return
 	}
 
 	// check if organization name is already taken
-	org, err := utils.GetMongoDbCollection(db, collection)
-	if err != nil {
-		utils.GetError(err, w)
-	}
+	org_filter := make(map[string]interface{})
+	org_filter["name"] = form_params["name"]
+	org, _ := utils.GetMongoDbDoc(collection, org_filter)
 	if org != nil {
-		utils.GetError(errors.New("Organization name is already taken"), w)
+		utils.GetError(errors.New("organization name is already taken"), w)
+		return
 	}
 
 	// confirm if user_id exists
-	user, err := utils.GetMongoDbCollection(db, "users", form_params.Get("user_id"))
-	if err != nil {
-		utils.GetError(err, w)
-	}
+	user_filter := make(map[string]interface{})
+	user_filter["user_id"] = form_params["user_id"]
+	user, _ := utils.GetMongoDbDoc(user_collection, user_filter)
 	if user == nil {
-		utils.GetError(errors.New("Invalid user id"), w)
+		utils.GetError(errors.New("invalid user id"), w)
+		return
 	}
-	// save organization
-	save, err := utils.CreateMongoDbCollection(db, collection)
 
+	// save organization
+	save, err := utils.CreateMongoDbDoc(collection, form_params)
 	if err != nil {
 		utils.GetError(err, w)
 	}
-
+	fmt.Println(save)
 }
