@@ -23,7 +23,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	form_params["user_id"] = r.FormValue("user_id")
 	form_params["name"] = r.FormValue("name")
 	form_params["email"] = r.FormValue("email")
-	// fmt.Println(utils.MapToBson(form_params))
 
 	// loop through and check for empty required params
 	for _, value := range required {
