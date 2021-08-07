@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"zuri.chat/zccore/data"
-	"zuri.chat/zccore/organisations"
+	"zuri.chat/zccore/organizations"
 )
 
 func Router() *mux.Router {
@@ -20,7 +20,7 @@ func Router() *mux.Router {
 	r.HandleFunc("/loadapp/{appid}", LoadApp).Methods("GET")
 	r.HandleFunc("/data/write", data.WriteData)
 	r.HandleFunc("/data/read", data.ReadData)
-	r.HandleFunc("/organisation/create", organisations.Create).Methods("POST")
+	r.HandleFunc("/organisation/create", organizations.Create).Methods("POST")
 
 	http.Handle("/", r)
 

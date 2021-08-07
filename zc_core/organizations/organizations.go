@@ -1,4 +1,4 @@
-package organisations
+package organizations
 
 import (
 	"errors"
