@@ -2,7 +2,6 @@ package organisations
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -10,6 +9,8 @@ import (
 )
 
 func Create(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	// parse form data
 	r.ParseForm()
 	collection, user_collection := "organizations", "users"
@@ -35,7 +36,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if len(empty) > 0 {
-		utils.GetError(errors.New(strings.Join(empty, ", ")+" required"), w)
+		utils.GetError(errors.New(strings.Join(empty, ", ")+" required"), http.StatusBadRequest, w)
 		return
 	}
 
@@ -44,7 +45,7 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	org_filter["name"] = form_params["name"]
 	org, _ := utils.GetMongoDbDoc(collection, org_filter)
 	if org != nil {
-		utils.GetError(errors.New("organization name is already taken"), w)
+		utils.GetError(errors.New("organization name is already taken"), http.StatusBadRequest, w)
 		return
 	}
 
@@ -53,14 +54,15 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	user_filter["user_id"] = form_params["user_id"]
 	user, _ := utils.GetMongoDbDoc(user_collection, user_filter)
 	if user == nil {
-		utils.GetError(errors.New("invalid user id"), w)
+		utils.GetError(errors.New("invalid user id"), http.StatusBadRequest, w)
 		return
 	}
 
 	// save organization
 	save, err := utils.CreateMongoDbDoc(collection, form_params)
 	if err != nil {
-		utils.GetError(err, w)
+		utils.GetError(err, http.StatusInternalServerError, w)
+		return
 	}
-	fmt.Println(save)
+	utils.GetSuccess("organization created", save, w)
 }
