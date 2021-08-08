@@ -10,13 +10,15 @@ import (
 )
 
 
-//"mongodb+srv://zuri:<password>@cluster0.hepte.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+//cluster_url := "mongodb://zuri:<password>@127.0.0.1:27017/myFirstDatabase?authSource=admin"
+
 
 // If you want to export your function. You must to start upper case function name. Otherwise you won't see your function when you import that on other class.
 //getMongoDbConnection get connection of mongodb
 func getMongoDbConnection() (*mongo.Client, error) {
+	//"mongodb+srv://zuri:<password>@cluster0.hepte.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 	cluster_url := "mongodb+srv://zuri:<password>@cluster0.hepte.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-	
+
 	clientOptions := options.Client().ApplyURI(cluster_url)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
