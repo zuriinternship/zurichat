@@ -14,8 +14,8 @@ type Config struct {
 }
 
 func LoadConfig() (config Config, err error){
-	viper.AddConfigPath("../")
-	viper.SetConfigName(".")
+	viper.AddConfigPath("./")
+	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
 
 	viper.GetViper().AutomaticEnv()

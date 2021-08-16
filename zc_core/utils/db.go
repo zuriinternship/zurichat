@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"time"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -40,32 +39,29 @@ func getMongoDbConnection() (*mongo.Client, context.Context, error) {
 }
 
 //GetMongoDbCollection get collection inside your db, this function can be exorted
-func GetMongoDbCollection(CollectionName string) (*mongo.Collection, error) {
+func GetMongoDbCollection(CollectionName string) (*mongo.Collection, context.Context, error) {
 	config, err := LoadConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	client, _, err := getMongoDbConnection()
+	client, ctx, err := getMongoDbConnection()
 
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	collection := client.Database(config.DBDatabase).Collection(CollectionName)
 
-	return collection, nil
+	return collection, ctx, nil
 }
 
 // get MongoDb documents for a collection
 func GetMongoDbDocs(CollectionName string, filter map[string]interface{}) ([]bson.M, error) {
-	DbName := Env("DB_NAME")
-	client, ctx, err := getMongoDbConnection()
+	collection, ctx, err := GetMongoDbCollection(CollectionName)
 	if err != nil {
 		return nil, err
 	}
-
-	collection := client.Database(DbName).Collection(CollectionName)
 
 	var data []bson.M
 	filterCursor, err := collection.Find(ctx, MapToBson(filter))
@@ -81,13 +77,10 @@ func GetMongoDbDocs(CollectionName string, filter map[string]interface{}) ([]bso
 
 // get single MongoDb document for a collection
 func GetMongoDbDoc(CollectionName string, filter map[string]interface{}) (bson.M, error) {
-	DbName := Env("DB_NAME")
-	client, ctx, err := getMongoDbConnection()
+	collection, ctx, err := GetMongoDbCollection(CollectionName)
 	if err != nil {
 		return nil, err
 	}
-
-	collection := client.Database(DbName).Collection(CollectionName)
 
 	var data bson.M
 	if err = collection.FindOne(ctx, MapToBson(filter)).Decode(&data); err != nil {
@@ -98,13 +91,10 @@ func GetMongoDbDoc(CollectionName string, filter map[string]interface{}) (bson.M
 }
 
 func CreateMongoDbDoc(CollectionName string, data map[string]interface{}) (*mongo.InsertOneResult, error) {
-	DbName := Env("DB_NAME")
-	client, ctx, err := getMongoDbConnection()
+	collection, ctx, err := GetMongoDbCollection(CollectionName)
 	if err != nil {
 		return nil, err
 	}
-
-	collection := client.Database(DbName).Collection(CollectionName)
 	res, err := collection.InsertOne(ctx, MapToBson(data))
 
 	if err != nil {

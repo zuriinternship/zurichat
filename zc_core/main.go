@@ -5,9 +5,18 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"zuri.chat/zccore/handlers"
+
 	"github.com/gorilla/mux"
+	"zuri.chat/zccore/handlers"
+	"zuri.chat/zccore/utils"
 )
+
+func init() {
+	_, err := utils.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func Router() *mux.Router {
 	l := log.New(os.Stdout, "Zuri Chat API", log.LstdFlags)
